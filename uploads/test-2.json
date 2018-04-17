@@ -1,4 +1,4 @@
-[
+﻿[
     {
         "question": "Основная функция ЭВМ?",
         "answers": [
@@ -12,6 +12,69 @@
             },
             {
                 "answer": "принцип программного управления",
+                "result": true
+            }
+        ]
+    },
+    {
+        "question": "Сколько будет 5х5?",
+        "answers": [
+            {
+                "answer": "29",
+                "result": false
+            },
+            {
+                "answer": "100",
+                "result": false
+            },
+            {
+                "answer": "30",
+                "result": false
+            },
+            {
+                "answer": "25",
+                "result": true
+            }
+        ]
+    },
+    {
+        "question": "Сколько будет 7+3?",
+        "answers": [
+            {
+                "answer": "11",
+                "result": false
+            },
+            {
+                "answer": "12",
+                "result": false
+            },
+            {
+                "answer": "18",
+                "result": false
+            },
+            {
+                "answer": "10",
+                "result": true
+            }
+        ]
+    },
+    {
+        "question": "Сколько будет 6-4?",
+        "answers": [
+            {
+                "answer": "8",
+                "result": false
+            },
+            {
+                "answer": "3",
+                "result": false
+            },
+            {
+                "answer": "5",
+                "result": false
+            },
+            {
+                "answer": "2",
                 "result": true
             }
         ]

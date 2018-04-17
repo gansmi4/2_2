@@ -1,4 +1,4 @@
-[
+﻿[
     {
         "question": "Из чего состоит персональный компьютер?",
         "answers": [
@@ -20,6 +20,56 @@
             },
             {
                 "answer": "комплекса мультимедиа",
+                "result": false
+            }
+        ]
+    },
+    {
+        "question": "Сколько граммов в одном килограмме?",
+        "answers": [
+            {
+                "answer": "1000",
+                "result": true
+            },
+            {
+                "answer": "10",
+                "result": false
+            },
+            {
+                "answer": "100",
+                "result": false
+            },
+            {
+                "answer": "10000",
+                "result": false
+            },
+            {
+                "answer": "500",
+                "result": false
+            }
+        ]
+    },
+    {
+        "question": "Сколько цветов у радуги?",
+        "answers": [
+            {
+                "answer": "7",
+                "result": true
+            },
+            {
+                "answer": "6",
+                "result": false
+            },
+            {
+                "answer": "5",
+                "result": false
+            },
+            {
+                "answer": "4",
+                "result": false
+            },
+            {
+                "answer": "2",
                 "result": false
             }
         ]

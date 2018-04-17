@@ -1,69 +1,58 @@
-<?php
-$file_list = glob('uploads/*.json');
-$test = [];
-foreach ($file_list as $key => $file) {
-    if ($key == $_GET['test']) {
-        $file_test = file_get_contents($file_list[$key]);
-        $decode_file = json_decode($file_test, true);
-        $test = $decode_file;
-    }
-}
-$question = $test[0]['question'];
-$answers[] = $test[0]['answers'];
-// Считаем кол-во правильных ответов
-$result_true = 0;
-foreach ($answers[0] as $item) {
-    if ($item['result'] === true) {
-        $result_true++;
-    }
-}
-$post_true = 0;
-$post_false = 0;
-if (count($_POST) > 0) {
-    // Проверяем и считаем правильность введенных ответов
-    foreach ($_POST as $key => $item) {
-        if ($answers[0][$key]['result'] === true) {
-            $post_true++;
-        }else{
-            $post_false++;
-        }
-    }
-    // Сравниваем и выводим результат
-    if ($post_true === $result_true && $post_false === 0) {
-        echo 'Правильно!';
-    }elseif ($post_true > 0 && $post_false > 0) {
-        echo 'Почти угадали =)';
-    }else{
-        echo 'Вы ошиблись =(';
-    }
-}
+﻿<?php
+Error_reporting(E_ALL);
+$numTest = htmlspecialchars($_GET["numTest"]);
+$dir    = 'uploads';
+$files = scandir($dir, 1);
+echo "<h1>Тест № ".$numTest."</h1>";
+echo "<br/>";
+echo "<br/>";
+$content = file_get_contents ('uploads/'.$files[$numTest].'');
+$decodeData = json_decode ($content, true);
+echo "<br/>";
+echo "<br/>";
+$countQuestions = count($decodeData);
 ?>
 
-<!doctype html>
-<html lang="ru">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Тест: <?=$question?></title>
+<meta charset="utf-8">
 </head>
 <body>
+<?php
+echo '<form action="" method="POST">';
+for ($i=0; $i<$countQuestions; $i++) {
+	echo "<fieldset><legend>".$decodeData["$i"]["testQuestion"]."</legend>";
+	$countTestAnswers = count($decodeData["$i"]["testAnswers"]);
+	$wrightAnswers[] = ($decodeData["$i"]["wrightAnswer"]);
+	for ($j=0; $j<$countTestAnswers; $j++) {
+		echo '<label><input name="'.$i.'" type="radio" value="' . $decodeData["$i"]["testAnswers"][$j] . '">' . $decodeData["$i"]["testAnswers"][$j] . '</label>';
+	}
+	echo "</fieldset>";
+}
+echo '<input type="submit" value="Отправить"></form>';
+echo "<br/>";
+echo "<br/>";
+echo "<br/>";
+$result = 0;
+for ($i=0; $i<$countQuestions; $i++) {
+	if (!isset($_POST[$i])){
+		echo "<br/>";
+		echo "Ответьте на все вопросы и нажмите кнопку 'Отправить'";
+		exit();
+	}
+	elseif ($wrightAnswers[$i] == $_POST[$i]) {
+		$result = $result + 1;
+	}
+}
+echo "Верных ответов: ".$result;
+?>
 
-<form method="post">
-    <fieldset>
-        <legend><?=$question?></legend>
-        <?php foreach ($answers[0] as $key => $item) : ?>
-            <label><input type="radio" name="<?=$key;?>" value="<?=$item['answer'];?>"> <?=$item['answer'];?></label>
-        <?php endforeach; ?>
-    </fieldset>
-    <input type="submit" value="Отправить">
-</form>
-
-<ul>
-    <li><a href="admin.php">Загрузить тест</a></li>
-    <li><a href="list.php">Список тестов</a></li>
-</ul>
-
+<br />
+<br />
+<br />
+<br />
+<a href="admin.php">Загрузить тест</a>
+<br />
+<a href="list.php">Список тестов</a>
 </body>
 </html>
