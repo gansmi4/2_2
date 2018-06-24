@@ -1,42 +1,38 @@
-﻿<?php
-Error_reporting(E_ALL);
-if (isset($_FILES['filename']['tmp_name'])){
-	$file = $_FILES['filename']['tmp_name'];
-}
-if (isset($_FILES['filename']['name'])){
-	$filename = $_FILES['filename']['name'];
-}
-if (!empty($file)) {
-	ini_set('memory_limit', '32M');
-	$maxsize = "100000000";
-	$extentions = array( "txt", "json");
-	$size = filesize ($_FILES['filename']['tmp_name']);
-	$type = strtolower(substr($filename, 1+strrpos($filename,".")));
-	$new_name = 'filename -'.time().'.'.$type;
-	if($size > $maxsize) {
-		echo "Файл больше 100 мб. Уменьшите размер вашего файла или загрузите другой. <br><a href='' onClick=window.close();>Закрыть окно</a>";
-	}
-	elseif(!in_array($type,$extentions)) {
-		echo ' <b>Файл имеет недопустимое расширение</b>. Допустимыми являются форматы "txt" и "json". <br>';
-	}
-	else {
-		if (copy($file, "uploads/".$filename)) {
-			echo "Файл '" . $filename . "' загружен!";
-		}
-		else echo "Файл НЕ был загружен.";
-	}
-}
-echo "<h1>Загруженные тесты:</h1>";
-echo '<br />';
-echo '<br />';
-$dir    = 'uploads';
-$files = scandir($dir, 1);
-echo '<br />';
-for ($i=0; $i<count($files)-2; $i++) {
-	echo $files[$i].' (Тест №  '.$i.')<a href="test.php?numTest=' . $i . '">Выбрать тест</a><br />';
-	}
-echo '<br />';
-echo '<br />';
-echo '<br />';
-echo "<a href='admin.php'>Загрузить тест</a>";
+<?php
+
+    // Определяем массив со всеми файлами из папки с тестами
+    $allFiles = glob('tests/*.json');
+
 ?>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles/list.css">
+</head>
+<body>
+    <a href="admin.php" class="back"><div>< Назад</div></a>
+    <hr>
+
+    <!-- Цикл, который выводит список всех загруженных файлов -->
+    <?php if (!empty($allFiles)): ?>
+        <?php foreach ($allFiles as $file): ?>
+
+            <div class="file-block">
+                <h1><?php echo str_replace('tests/', '', $file); ?></h1><br>
+                <em>Загружен: <?php echo date("d-m-Y H:i", filemtime($file)) ?></em><br>
+                <a href="test.php?number=<?php echo array_search($file, $allFiles); ?>">Перейти на страницу с тестом ></a>
+            </div>
+            <hr>
+
+        <?php endforeach; ?>
+    <?php endif; ?>
+    <?php if (empty($allFiles)) echo 'Пока не загружено ни одного теста';?>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="js/list.js"></script>
+</body>
+</html>
